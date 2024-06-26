@@ -241,10 +241,4 @@ QString WeightManager_wm100::getDescription()
     return res;
 }
 
-// SIGNAL 0
-void WeightManager_wm100::paramChanged(const int _t1, const int _t2)
-{
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
-}
 

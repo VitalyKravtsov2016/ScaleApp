@@ -37,18 +37,20 @@ void EquipmentManager::create()
 
     PMMode = EquipmentMode_None;
     removePM();
-
+    /*
     if(!Tools::checkPermission("android.permission.READ_EXTERNAL_STORAGE"))
     {
         showAttention(QString("Нет разрешения для чтения конфиг.файла. %1").arg(WMPM_MESSAGE_NONE));
         return;
     }
-    if(!Tools::isFileExists(path))
+    */
+    if(!QFile::exists(path))
     {
         showAttention(QString("Конфиг.файл %1 не найден. %2").arg(path, WMPM_MESSAGE_NONE));
         return;
     }
-    if(Tools::getFileSize(path) == 0)
+    QFile file(path);
+    if(file.size() == 0)
     {
         showAttention(QString("Конфиг.файл %1 имеет размер 0. %2").arg(path, WMPM_MESSAGE_NONE));
         return;

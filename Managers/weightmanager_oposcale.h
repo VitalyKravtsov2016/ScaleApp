@@ -27,7 +27,7 @@ public:
 private:
     OpoScaleSDK device;
     ScaleStatus status;
-    QString deviceName = "/dev/ttyS0";
+    QString deviceName = "ttyS0";
     int errorCode = 0;
     QString errorText = "";
     bool started = false;

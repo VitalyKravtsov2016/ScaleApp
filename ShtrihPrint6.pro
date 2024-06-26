@@ -421,19 +421,18 @@ android {
         Android/AndroidManifest.xml \
         Android/src/ru/shtrih_m/shtrihprint6/AndroidNative.java
 
+    QT_ANDROID_PACKAGE_SOURCE_DIR = $$PWD/Android
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/Android
+
+    LIBS += $$PWD/Equipment/OpoScale/libs/arm64-v8a/libgni_static.a
+    ANDROID_EXTRA_LIBS += $$PWD/Equipment/OpoScale/libs/arm64-v8a/liboposcalessdk.so
+    ANDROID_LIB_DEPENDENCIES += $$PWD/Equipment/OpoScale/libs/arm64-v8a/liboposcalessdk.so
+
+    dependencies {
+        files('opoandroidsdk_v2.017.jar')
+    }
 }
 
-LIBS += $$PWD/Equipment/OpoScale/libs/arm64-v8a/libgni_static.a
-INCLUDEPATH += $$PWD/Equipment/OpoScale/libs/arm64-v8a/
-
-ANDROID_EXTRA_LIBS += $$PWD/Equipment/OpoScale/libs/arm64-v8a/liboposcalessdk.so
-ANDROID_LIB_DEPENDENCIES += $$PWD/Equipment/OpoScale/libs/arm64-v8a/liboposcalessdk.so \
-ANDROID_BUNDLED_JAR_DEPENDENCIES += $$PWD/Equipment/OpoScale/libs/opoandroidsdk_v2.017.jar
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD
-
-INCLUDEPATH += $$PWD/Equipment/OpoScale/libs/opoandroidsdk_v2.017.jar
-DEPENDPATH += $$PWD/Equipment/OpoScale/libs/opoandroidsdk_v2.017.jar
 
 
 

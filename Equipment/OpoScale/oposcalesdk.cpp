@@ -9,14 +9,19 @@
 OpoScaleSDK::OpoScaleSDK(QObject *parent)
     : QObject{parent}
 {
-    gcontext = getGlobalContext();
-    gni::GniCore::Init(env.javaVM(), gcontext);
+    qDebug() << "OpoScaleSDK::OpoScaleSDK.0";
+    //gcontext = getGlobalContext();
+    //gni::GniCore::Init(env.javaVM(), gcontext);
+    qDebug() << "OpoScaleSDK::OpoScaleSDK.1";
 }
 
 OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* OpoScaleSDK::getsdk()
 {
     if (sdk == nullptr)
     {
+        gcontext = getGlobalContext();
+        gni::GniCore::Init(env.javaVM(), gcontext);
+
         qDebug() << "getsdk";
         const android::content::Context context(gcontext);
         sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context);
@@ -80,12 +85,14 @@ bool OpoScaleSDK::isSucceeded(int rc){
 
 jobject OpoScaleSDK::getGlobalContext()
 {
+    qDebug() << "OpoScaleSDK::getGlobalContext.0";
     QJniEnvironment env;
     jclass activityThread = env.jniEnv()->FindClass("android/app/ActivityThread");
     jmethodID currentActivityThread = env.jniEnv()->GetStaticMethodID(activityThread, "currentActivityThread", "()Landroid/app/ActivityThread;");
     jobject activityThreadObj = env.jniEnv()->CallStaticObjectMethod(activityThread, currentActivityThread);
     jmethodID getApplication = env.jniEnv()->GetMethodID(activityThread, "getApplication", "()Landroid/app/Application;");
     jobject context = env.jniEnv()->CallObjectMethod(activityThreadObj, getApplication);
+    qDebug() << "OpoScaleSDK::getGlobalContext.1";
     return context;
 }
 

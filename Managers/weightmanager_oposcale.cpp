@@ -83,7 +83,7 @@ int WeightManager_OpoScale::open(QString path)
     }
 
     if (uri.startsWith("serial:")){
-        static QString SerialRegexStr("^serial:\\w+");
+        static QString SerialRegexStr("^serial:\\/\\/w+");
         QRegularExpression reg(SerialRegexStr);
         QRegularExpressionMatch match = reg.match(uri);
         deviceName = match.captured(0);
@@ -105,7 +105,7 @@ int WeightManager_OpoScale::start()
     clearError();
     if (!started)
     {
-        if (!device.Open(deviceName))
+        if (!device.Open("/dev/" + deviceName))
         {
             errorCode = -1;
             errorText = "Ошибка открытия устройства";
