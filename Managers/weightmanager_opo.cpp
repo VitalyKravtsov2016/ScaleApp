@@ -7,7 +7,10 @@
 
 int WeightManager_Opo::readConnectParam(const QString &filename, const QString &param, QString &uri)
 {
+    Tools::debugLog("@@@@@ WeightManager_Opo::readConnectParam");
+
     clearError();
+
     QFile file(filename);
     QByteArray data;
     if (!file.exists())
@@ -69,6 +72,7 @@ int WeightManager_Opo::readConnectParam(const QString &filename, const QString &
 
 int WeightManager_Opo::open(QString path)
 {
+    Tools::debugLog("@@@@@ WeightManager_Opo::open " + path);
     clearError();
     QString uri;
     int e = readConnectParam(path, "WmUri", uri);
@@ -102,6 +106,8 @@ void WeightManager_Opo::clearError()
 
 int WeightManager_Opo::start()
 {
+    Tools::debugLog("@@@@@ WeightManager_Opo::start");
+
     clearError();
     if (!started)
     {
@@ -114,13 +120,16 @@ int WeightManager_Opo::start()
             started = true;
         }
     }
+    Tools::debugLog("@@@@@ WeightManager_Opo::start: " + errorText);
     return errorCode;
 }
 
 int WeightManager_Opo::stop()
 {
+    Tools::debugLog("@@@@@ WeightManager_Opo::stop");
     clearError();
     if (started){
+        started = false;
         device.Close();
     }
     return errorCode;
@@ -128,15 +137,19 @@ int WeightManager_Opo::stop()
 
 QString WeightManager_Opo::getVersion()
 {
+    Tools::debugLog("@@@@@ WeightManager_Opo::getVersion");
     return "1.0";
 }
 
 QString WeightManager_Opo::getDescription(){
+    Tools::debugLog("@@@@@ WeightManager_Opo::getDescription");
     return "OpoScale";
 }
 
 ScaleStatus WeightManager_Opo::getStatus()
 {
+    Tools::debugLog("@@@@@ WeightManager_Opo::getStatus");
+
     QString result = device.GetResult();
     WeightData weight = device.getWeight();
 
@@ -180,7 +193,13 @@ int WeightManager_Opo::setDateTime(const QDateTime& dt)
 }
 
 QString WeightManager_Opo::getErrorDescription(const int e){
-    return device.getErrorMessage(e);
+    Tools::debugLog("@@@@@ WeightManager_Opo::getErrorDescription");
+
+    switch (e)
+    {
+        case -1: return "Ошибка открытия устройства";
+        default: return device.getErrorMessage(e);
+    }
 }
 
 
