@@ -6,11 +6,13 @@
 #include "constants.h"
 #include "externalmessager.h"
 #include "weightmanager.h"
+#include "printmanager.h"
 
 class AppManager;
 class DataBase;
 class Slpa100u;
 class LabelCreator;
+
 
 class EquipmentManager : public ExternalMessager
 {
@@ -20,7 +22,7 @@ public:
     EquipmentManager(AppManager*);
     ~EquipmentManager() {
         delete wm;
-        removePM();
+        delete pm;
     }
     void create();
     void start();
@@ -28,11 +30,18 @@ public:
     void setSystemDateTime(const QDateTime&);
     void pause(const bool v)
     {
-        if (v) wm->stop(); else wm->start();
-        pausePM(v);
+        if (v) {
+            wm->stop();
+            pm->stop();
+        }
+        else {
+            wm->start();
+            pm->start(appManager);
+        }
     }
 
     // Weight Manager:
+    void createWM();
     bool isWM() {return (wm != nullptr) && (wm->getStatus().isStarted) && (wm->getMode() != EquipmentMode_None);}
     QString WMversion() const {return wm->getVersion();}
     void setWMParam(const int param) {wm->setParam(param);}
@@ -41,56 +50,35 @@ public:
     ScaleStatus getStatus() { return wm->getStatus(); }
 
     // Print Manager:
-    QString PMversion() const;
-    int print(DataBase*, const DBRecord&, const DBRecord&, const QString&, const QString&, const QString&);
-    bool isPMError() const { return PMErrorCode != 0 || isPMStateError(PMStatus); }
-    bool isPMDemoMode() const { return PMMode == EquipmentMode_Demo; }
-    QString getPMErrorDescription(const int) const;
-    bool isPM();
-    void feed();
+    void createPM();
+    bool isPMError() { return pm->isError(); }
+    bool isPMDemoMode() { return pm->getMode() == EquipmentMode_Demo;}
+    bool isPM(){return (pm != nullptr) && (pm->isStarted()) && (pm->getMode() != EquipmentMode_None);}
+    QString PMversion() const { return pm->getVersion(); }
+    int print(DataBase* db, const DBRecord& dbr1, const DBRecord&, const QString&, const QString&, const QString&);
+    QString getPMErrorDescription(const int e) const { return pm->getErrorDescription(e); }
+    void feed() {pm->feed(); };
 
 private:
     QString makeBarcode(const DBRecord&, const QString&, const QString&, const QString&);
     QString parseBarcode(const QString&, const QChar, const QString&);
-    QString getWMDescriptionNow();
-
-    // Weight Manager:
-    void createWM();
-    //void removeWM();
-    void stopWM();
-    int startWM();
-    void pauseWM(const bool);
-    bool isWMFlag(Wm100Protocol::channel_status, int) const;
-    bool isWMStateError(Wm100Protocol::channel_status) const;
 
     // Print Manager:
-    void createPM();
-    void removePM();
     int startPM();
     void stopPM();
-    void pausePM(const bool);
-    bool isPMFlag(uint16_t v, int shift) const { return (v & (0x00000001 << shift)) != 0; }
     bool isPMStateError(uint16_t) const;
 
     // Weight Manager:
     WeightManager* wm = nullptr;
-
     // Print Manager:
-    Slpa100u* slpa = nullptr;
+    PrintManager* pm = nullptr;
     LabelCreator* labelCreator = nullptr;
-    bool isPMStarted = false;
-    int PMErrorCode = 0;
-    uint16_t PMStatus = 0;
-    QString PMUri;
-    EquipmentMode PMMode = EquipmentMode_None;
 
 signals:
     void printed(const DBRecord&);
     void paramChanged(const int, const int);
 
 public slots:
-    void onPMStatusChanged(uint16_t);
-    void onPMErrorStatusChanged(int);
     void wmParamChanged(const int param, const int e);
 };
 

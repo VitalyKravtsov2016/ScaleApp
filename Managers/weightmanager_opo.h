@@ -1,16 +1,16 @@
-#ifndef WEIGHTMANAGER_OPOSCALE_H
-#define WEIGHTMANAGER_OPOSCALE_H
+#ifndef WEIGHTMANAGER_OPO_H
+#define WEIGHTMANAGER_OPO_H
 
 #include "constants.h"
 #include "weightmanager.h"
 #include "oposcalesdk.h"
 
-class WeightManager_OpoScale: public WeightManager
+class WeightManager_Opo: public WeightManager
 {
     Q_OBJECT
 
 public:
-    WeightManager_OpoScale(QObject *parent = nullptr){};
+    WeightManager_Opo(QObject *parent = nullptr){};
 
     int open(QString path);
     int start();
@@ -42,4 +42,4 @@ signals:
 };
 
 
-#endif // WEIGHTMANAGER_OPOSCALE_H
+#endif // WEIGHTMANAGER_OPO_H

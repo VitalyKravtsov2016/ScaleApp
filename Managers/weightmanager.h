@@ -14,12 +14,12 @@ class WeightManager: public QObject
 {
 public:
     WeightManager(QObject *parent = nullptr){};
+
+    virtual int open(QString path) = 0;
     virtual int start() = 0;
     virtual int stop() = 0;
-    virtual int open(QString path) = 0;
     virtual int getErrorCode() = 0;
     virtual QString getErrorText() = 0;
-
     virtual ScaleStatus getStatus() = 0;
     virtual EquipmentMode getMode() = 0;
     virtual QString getVersion() = 0;

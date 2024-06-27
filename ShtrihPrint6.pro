@@ -22,8 +22,13 @@ HEADERS += \
     Equipment/OpoScale/opolabelprinter.h \
     Equipment/OpoScale/oposcalesdk.h \
     Equipment/OpoScale/weightdata.h \
+    Managers/printmanager.h \
+    Managers/printmanager_demo.h \
+    Managers/printmanager_opo.h \
+    Managers/printmanager_slpa100.h \
     Managers/weightmanager.h \
-    Managers/weightmanager_oposcale.h \
+    Managers/weightmanager_demo.h \
+    Managers/weightmanager_opo.h \
     Managers/weightmanager_wm100.h \
     Models/edituserspanelmodel3.h \
     Models/inputproductcodepanelmodel3.h \
@@ -153,8 +158,13 @@ HEADERS += \
     Net/netserver.h \
 
 SOURCES += \
+    Managers/printmanager.cpp \
+    Managers/printmanager_demo.cpp \
+    Managers/printmanager_opo.cpp \
+    Managers/printmanager_slpa100.cpp \
     Managers/weightmanager.cpp \
-    Managers/weightmanager_oposcale.cpp \
+    Managers/weightmanager_demo.cpp \
+    Managers/weightmanager_opo.cpp \
     Managers/weightmanager_wm100.cpp \
     Models/edituserspanelmodel3.cpp \
     Models/inputproductcodepanelmodel3.cpp \

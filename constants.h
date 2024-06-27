@@ -80,6 +80,18 @@
 #define EQUIPMENT_POLLING_INTERVAL 200
 #define BACKGROUND_DOWNLOADING false
 
+enum ScaleModel
+{
+    ScaleModel_Wm100 = 0,
+    ScaleModel_Opo = 1
+};
+
+enum PrinterModel
+{
+    PrinterModel_Slpa100 = 0,
+    PrinterModel_Opo = 1
+};
+
 enum MainPageIndex
 {
     MainPageIndex_Authorization = -1,

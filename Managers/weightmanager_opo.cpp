@@ -1,11 +1,11 @@
-#include "weightmanager_oposcale.h"
+#include "weightmanager_opo.h"
 
 #include "constants.h"
 #include "weightmanager.h"
 #include "oposcalesdk.h"
 #include <QJsonDocument>
 
-int WeightManager_OpoScale::readConnectParam(const QString &filename, const QString &param, QString &uri)
+int WeightManager_Opo::readConnectParam(const QString &filename, const QString &param, QString &uri)
 {
     clearError();
     QFile file(filename);
@@ -67,7 +67,7 @@ int WeightManager_OpoScale::readConnectParam(const QString &filename, const QStr
 // "/dev/ttyS0";
 // "WmUri":"serial:/dev/ttyS0",
 
-int WeightManager_OpoScale::open(QString path)
+int WeightManager_Opo::open(QString path)
 {
     clearError();
     QString uri;
@@ -94,13 +94,13 @@ int WeightManager_OpoScale::open(QString path)
     return 0;
 }
 
-void WeightManager_OpoScale::clearError()
+void WeightManager_Opo::clearError()
 {
     errorCode = 0;
     errorText = "Ошибок нет";
 }
 
-int WeightManager_OpoScale::start()
+int WeightManager_Opo::start()
 {
     clearError();
     if (!started)
@@ -117,7 +117,7 @@ int WeightManager_OpoScale::start()
     return errorCode;
 }
 
-int WeightManager_OpoScale::stop()
+int WeightManager_Opo::stop()
 {
     clearError();
     if (started){
@@ -126,16 +126,16 @@ int WeightManager_OpoScale::stop()
     return errorCode;
 }
 
-QString WeightManager_OpoScale::getVersion()
+QString WeightManager_Opo::getVersion()
 {
     return "1.0";
 }
 
-QString WeightManager_OpoScale::getDescription(){
+QString WeightManager_Opo::getDescription(){
     return "OpoScale";
 }
 
-ScaleStatus WeightManager_OpoScale::getStatus()
+ScaleStatus WeightManager_Opo::getStatus()
 {
     QString result = device.GetResult();
     WeightData weight = device.getWeight();
@@ -151,8 +151,8 @@ ScaleStatus WeightManager_OpoScale::getStatus()
     return status;
 }
 
-void WeightManager_OpoScale::setParam(const int param){
-    Tools::debugLog("@@@@@ WeightManager_OpoScale::setParam " + Tools::intToString(param));
+void WeightManager_Opo::setParam(const int param){
+    Tools::debugLog("@@@@@ WeightManager_Opo::setParam " + Tools::intToString(param));
 
     if (!started) return;
 
@@ -171,15 +171,15 @@ void WeightManager_OpoScale::setParam(const int param){
     }
 }
 
-int WeightManager_OpoScale::setDateTime(const QDateTime& dt)
+int WeightManager_Opo::setDateTime(const QDateTime& dt)
 {
-    Tools::debugLog("@@@@@ WeightManager_OpoScale::setDateTime " + dt.toString("dd.MM.yyyy HH:mm:ss"));
+    Tools::debugLog("@@@@@ WeightManager_Opo::setDateTime " + dt.toString("dd.MM.yyyy HH:mm:ss"));
 
     clearError();
     return errorCode;
 }
 
-QString WeightManager_OpoScale::getErrorDescription(const int e){
+QString WeightManager_Opo::getErrorDescription(const int e){
     return device.getErrorMessage(e);
 }
 

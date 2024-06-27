@@ -30,6 +30,7 @@ public:
     int getErrorCode() { return errorCode; }
     QString getErrorText() { return errorText;}
     QString getErrorDescription(const int e);
+    bool isError() { return errorCode != 0 || isStateError(status); }
 private:
     void clearError();
     void setLastError(int e);
@@ -44,6 +45,8 @@ private:
     bool isSystemDateTime = false;
     Wm100Protocol::channel_status status = {0, 0.0, 0.0, 0};
     EquipmentMode mode = EquipmentMode_None;
+
+    bool isPMFlag(uint16_t v, int shift) const { return (v & (0x00000001 << shift)) != 0; }
 
 signals:
     void paramChanged(const int, const int);
