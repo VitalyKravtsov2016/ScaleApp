@@ -20,13 +20,18 @@ int PrintManager_Opo::start(AppManager* appManager)
         if (device.Open())
         {
             started = true;
-            errorCode = device.GetStatus();
+            for (int i=1;i<10;i++)
+            {
+                errorCode = device.GetStatus();
+                if (errorCode == 0) break;
+            }
 
         } else
         {
             errorCode = -1;
         }
     }
+    Tools::debugLog("@@@@@ PrintManager_Opo::start: " + errorCode);
     return errorCode;
 }
 
@@ -38,6 +43,7 @@ int PrintManager_Opo::stop()
         started = false;
         device.Close();
     }
+    Tools::debugLog("@@@@@ PrintManager_Opo::stop: 0");
     return 0;
 }
 
@@ -46,6 +52,7 @@ int PrintManager_Opo::print(QImage image)
     Tools::debugLog("@@@@@ PrintManager_Opo::print");
     QBitmap bitmap = QBitmap::fromImage(image, Qt::MonoOnly);
     device.PrintLabelBitmap(bitmap);
+    Tools::debugLog("@@@@@ PrintManager_Opo::print=0");
     return 0;
 }
 
@@ -57,16 +64,20 @@ QString PrintManager_Opo::getVersion()
 
 bool PrintManager_Opo::isStateError(uint16_t s)
 {
-    Tools::debugLog("@@@@@ PrintManager_Opo::getVersion");
+    Tools::debugLog("@@@@@ PrintManager_Opo::isStateError=" + s);
     return s != 0;
 }
 
 QString PrintManager_Opo::getErrorDescription(const int e)
 {
+
     Tools::debugLog("@@@@@ PrintManager_Opo::getErrorDescription");
+    QString text = "";
     switch (e)
     {
-    case -1: return "Ошибка открытия устройства";
-    default: return device.getStatusText(e);
+    case -1: text = "Ошибка открытия устройства";
+    default: text = device.getStatusText(e);
     }
+    Tools::debugLog("@@@@@ PrintManager_Opo::getErrorDescription=" + text);
+    return text;
 }

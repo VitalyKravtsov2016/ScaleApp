@@ -66,7 +66,3 @@ bool WeightData::isTareSet(){
 bool WeightData::isStable(){
     return sStatus == StatusStable;
 }
-
-bool WeightData::isZero(){
-    return !(sZero == "");
-}

@@ -124,6 +124,13 @@ int WeightManager_Opo::start()
     return errorCode;
 }
 
+void WeightManager_Opo::onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo& arg1)
+{
+    Tools::debugLog("@@@@@ WeightManager_Opo::onWeightChanged.0");
+    emit paramChanged(ControlParam_WeightValue, 0);
+    Tools::debugLog("@@@@@ WeightManager_Opo::onWeightChanged.1");
+}
+
 int WeightManager_Opo::stop()
 {
     Tools::debugLog("@@@@@ WeightManager_Opo::stop");
@@ -160,7 +167,12 @@ ScaleStatus WeightManager_Opo::getStatus()
     status.isStarted = started;
     status.isTareSet = weight.isTareSet();
     status.isWeightFixed = weight.isStable();
-    status.isWeightZero = weight.isZero();
+    status.isWeightZero = status.weight == 0;
+    Tools::debugLog("@@@@@ WeightManager_Opo::getStatus: tare=" + Tools::doubleToString(status.tare, 3) +
+                    ", weight=" + Tools::doubleToString(status.weight, 3) +
+                    ", isTareSet=" + Tools::boolToString(status.isTareSet) +
+                    ", isWeightFixed=" + Tools::boolToString(status.isWeightFixed) +
+                    ", isWeightZero=" + Tools::boolToString(status.isWeightZero));
     return status;
 }
 
@@ -192,7 +204,8 @@ int WeightManager_Opo::setDateTime(const QDateTime& dt)
     return errorCode;
 }
 
-QString WeightManager_Opo::getErrorDescription(const int e){
+QString WeightManager_Opo::getErrorDescription(const int e)
+{
     Tools::debugLog("@@@@@ WeightManager_Opo::getErrorDescription");
 
     switch (e)

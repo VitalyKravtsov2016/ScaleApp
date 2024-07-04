@@ -51,6 +51,7 @@ public:
         virtual void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo& arg1) const;
         onWeightChangedCallback on_weight_changed_callback_ = nullptr;
     };
+
 };
 
 }  // namespace ScalesOS

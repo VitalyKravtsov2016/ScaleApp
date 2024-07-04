@@ -23,7 +23,6 @@ const int EPresetTareMode       = 34048; // 0x8500
 const int EAntiCheatOff         = 34304; // 0x8600
 const int EInvalidCommand       = 65024; // 0xFE00
 
-
 class OpoScaleSDK : public QObject
 {
     Q_OBJECT
@@ -31,8 +30,10 @@ private:
     WeightData weight;
     QJniEnvironment env;
     jobject gcontext = nullptr;
-    OnePlusOneAndroidSDK::ScalesOS::WeightInfo* weightInfo;
     OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* sdk = nullptr;
+    OnePlusOneAndroidSDK::ScalesOS::WeightInfo* weightInfo = nullptr;
+    OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* listener;
+    void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1);
 public:
     explicit OpoScaleSDK(QObject *parent = nullptr);
 
@@ -58,6 +59,7 @@ public:
     int32_t PreTare(int32_t arg1);
     int32_t ExitTare();
 signals:
+    void weightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1);
 };
 
 #endif // OPOSCALESDK_H

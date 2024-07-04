@@ -25,9 +25,28 @@ OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* OpoScaleSDK::getsdk()
         qDebug() << "getsdk";
         const android::content::Context context(gcontext);
         sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context);
+        /*
+        const OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener listener(nullptr);
+        sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context, listener);
+        listener.on_weight_changed_callback_ = onWeightChanged;
+
+        //listener->onWeightChangedCallback = onWeightChanged;
+        //listener = new OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener();
+        //sdk->setWeightChangedListener(listener);
+
+        listener = ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged);
+        sdk->setWeightChangedListener(listener);
+
+        */
+
+
         qDebug() << "getsdk: OK";
     }
     return sdk;
+}
+
+void OpoScaleSDK::onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1){
+    emit weightChanged(arg1);
 }
 
 QString OpoScaleSDK::getErrorMessage(int rc)

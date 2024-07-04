@@ -35,6 +35,7 @@ private:
 
     void clearError();
     int readConnectParam(const QString &filename, const QString &param, QString &uri);
+    void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo& arg1);
 
 signals:
     void paramChanged(const int, const int);

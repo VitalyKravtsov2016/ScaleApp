@@ -27,7 +27,6 @@ public:
 
     bool isTareSet();
     bool isStable();
-    bool isZero();
 
 };
 
