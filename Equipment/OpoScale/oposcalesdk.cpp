@@ -5,6 +5,15 @@
 #include "OnePlusOneAndroidSDK\ScalesOS\scales_s_d_k.hpp"
 #include "weightdata.h"
 
+void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1){
+    //emit weightChanged(arg1);
+}
+
+void OpoScaleSDK::onWeightChanged2(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1)
+{
+
+}
+
 
 OpoScaleSDK::OpoScaleSDK(QObject *parent)
     : QObject{parent}
@@ -24,29 +33,11 @@ OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* OpoScaleSDK::getsdk()
 
         qDebug() << "getsdk";
         const android::content::Context context(gcontext);
-        sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context);
-        /*
-        const OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener listener(nullptr);
+        listener = OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged2);
         sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context, listener);
-        listener.on_weight_changed_callback_ = onWeightChanged;
-
-        //listener->onWeightChangedCallback = onWeightChanged;
-        //listener = new OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener();
-        //sdk->setWeightChangedListener(listener);
-
-        listener = ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged);
-        sdk->setWeightChangedListener(listener);
-
-        */
-
-
         qDebug() << "getsdk: OK";
     }
     return sdk;
-}
-
-void OpoScaleSDK::onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1){
-    emit weightChanged(arg1);
 }
 
 QString OpoScaleSDK::getErrorMessage(int rc)
@@ -115,7 +106,7 @@ jobject OpoScaleSDK::getGlobalContext()
     return context;
 }
 
-void OpoScaleSDK::setWeightChangedListener(const ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener& arg1)
+void OpoScaleSDK::setWeightChangedListener(::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* arg1)
 {
     qDebug() << "setWeightChangedListener";
     getsdk()->setWeightChangedListener(arg1);

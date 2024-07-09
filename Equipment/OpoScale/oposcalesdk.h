@@ -32,8 +32,8 @@ private:
     jobject gcontext = nullptr;
     OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* sdk = nullptr;
     OnePlusOneAndroidSDK::ScalesOS::WeightInfo* weightInfo = nullptr;
-    OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* listener;
-    void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1);
+    OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* listener = nullptr;
+    void onWeightChanged2(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1);
 public:
     explicit OpoScaleSDK(QObject *parent = nullptr);
 
@@ -46,7 +46,7 @@ public:
     bool isFailed(int rc);
     bool isSucceeded(int rc);
     QString getErrorMessage(int rc);
-    void setWeightChangedListener(const ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener& arg1);
+    void setWeightChangedListener(::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* arg1);
     void setScaleAlwaysRead();
     bool Open(QString deviceName);
     ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* getWeihtInfo();

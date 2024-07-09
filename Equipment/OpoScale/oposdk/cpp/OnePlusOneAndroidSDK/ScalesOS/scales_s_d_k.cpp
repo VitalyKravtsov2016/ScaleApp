@@ -37,11 +37,11 @@ void ScalesSDK::destroy(const ScalesSDK* object)
   delete object;
 }
 
-void ScalesSDK::setWeightChangedListener(const ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener& arg1) const
+void ScalesSDK::setWeightChangedListener(::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* arg1) const
 {
   JNIEnv *env = gni::GniCore::GetInstance()->GetJniEnv();
   static const jmethodID method_id = env->GetMethodID(GetClass(), "setWeightChangedListener", "(LOnePlusOneAndroidSDK/ScalesOS/ScalesSDK$WeightChangedListener;)V");
-  env->CallVoidMethod(GetImpl(), method_id, arg1.GetImpl());
+  env->CallVoidMethod(GetImpl(), method_id, arg1->GetImpl());
 }
 
 void ScalesSDK::setScaleAlwaysRead() const
@@ -59,11 +59,11 @@ void ScalesSDK::setScaleAlwaysRead() const
   return *ret;
 }
 
-::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK& ScalesSDK::getInstance(const ::android::content::Context& arg1, const ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener& arg2)
+::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK& ScalesSDK::getInstance(const ::android::content::Context& arg1, ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* arg2)
 {
   JNIEnv *env = gni::GniCore::GetInstance()->GetJniEnv();
   static const jmethodID method_id = env->GetStaticMethodID(GetClass(), "getInstance", "(Landroid/content/Context;LOnePlusOneAndroidSDK/ScalesOS/ScalesSDK$WeightChangedListener;)LOnePlusOneAndroidSDK/ScalesOS/ScalesSDK;");
-  ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* ret = new ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK(gni::common::ScopedLocalRef<jobject>(env, env->CallStaticObjectMethod(GetClass(), method_id, arg1.GetImpl(), arg2.GetImpl())).Get());
+  ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* ret = new ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK(gni::common::ScopedLocalRef<jobject>(env, env->CallStaticObjectMethod(GetClass(), method_id, arg1.GetImpl(), arg2->GetImpl())).Get());
   return *ret;
 }
 

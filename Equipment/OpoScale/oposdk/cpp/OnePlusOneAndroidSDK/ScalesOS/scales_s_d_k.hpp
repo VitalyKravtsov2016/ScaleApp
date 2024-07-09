@@ -23,10 +23,10 @@ public:
     static void destroy(const ScalesSDK* object);
     explicit ScalesSDK(jobject object) : ::gni::Object(object) {}
     ~ScalesSDK() override = default;
-    virtual void setWeightChangedListener(const ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener& arg1) const;
+    virtual void setWeightChangedListener(::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* arg1) const;
     virtual void setScaleAlwaysRead() const;
     static ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK& getInstance(const ::android::content::Context& arg1);
-    static ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK& getInstance(const ::android::content::Context& arg1, const ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener& arg2);
+    static ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK& getInstance(const ::android::content::Context& arg1, ::OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* arg2);
     virtual bool Open(const ::java::io::File& arg1) const;
     virtual ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo& getWeihtInfo() const;
     static void ReadThread(bool arg1);
