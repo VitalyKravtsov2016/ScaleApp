@@ -33,7 +33,6 @@ private:
     OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* sdk = nullptr;
     OnePlusOneAndroidSDK::ScalesOS::WeightInfo* weightInfo = nullptr;
     OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener* listener = nullptr;
-    void onWeightChanged2(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1);
 public:
     explicit OpoScaleSDK(QObject *parent = nullptr);
 

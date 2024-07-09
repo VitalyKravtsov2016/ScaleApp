@@ -5,15 +5,16 @@
 #include "OnePlusOneAndroidSDK\ScalesOS\scales_s_d_k.hpp"
 #include "weightdata.h"
 
-void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1){
-    //emit weightChanged(arg1);
-}
+OpoScaleSDK* gScale = nullptr;
 
-void OpoScaleSDK::onWeightChanged2(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1)
+void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo* arg1)
 {
-
+    if (gScale){
+        qDebug() << "onWeightChanged.0";
+        emit gScale->weightChanged(arg1);
+        qDebug() << "onWeightChanged.1";
+    }
 }
-
 
 OpoScaleSDK::OpoScaleSDK(QObject *parent)
     : QObject{parent}
@@ -22,6 +23,7 @@ OpoScaleSDK::OpoScaleSDK(QObject *parent)
     //gcontext = getGlobalContext();
     //gni::GniCore::Init(env.javaVM(), gcontext);
     qDebug() << "OpoScaleSDK::OpoScaleSDK.1";
+    gScale = this;
 }
 
 OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* OpoScaleSDK::getsdk()
@@ -33,7 +35,7 @@ OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* OpoScaleSDK::getsdk()
 
         qDebug() << "getsdk";
         const android::content::Context context(gcontext);
-        listener = OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged2);
+        listener = OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged);
         sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context, listener);
         qDebug() << "getsdk: OK";
     }
