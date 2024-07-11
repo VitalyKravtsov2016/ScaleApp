@@ -23,6 +23,8 @@ public:
     ~EquipmentManager() {
         delete wm;
         delete pm;
+        delete labelCreator;
+
     }
     void create();
     void start();
@@ -42,12 +44,15 @@ public:
 
     // Weight Manager:
     void createWM();
-    bool isWM() {return (wm != nullptr) && (wm->getStatus().isStarted) && (wm->getMode() != EquipmentMode_None);}
+    bool isWM()
+    {
+        return (wm != nullptr) && (wm->getStatus().isStarted) && (wm->getMode() != EquipmentMode_None);
+    }
     QString WMversion() const {return wm->getVersion();}
     void setWMParam(const int param) {wm->setParam(param);}
     QString getWMErrorDescription(const int code) const { return wm->getErrorDescription(code); }
     QString getWMDescription() { return wm->getDescription(); }
-    ScaleStatus getStatus() { return wm->getStatus(); }
+    ScaleStatus getWMStatus() { return wm->getStatus(); }
 
     // Print Manager:
     void createPM();

@@ -926,6 +926,7 @@ void AppManager::onEquipmentParamChanged(const int param, const int errorCode)
     case ControlParam_WeightValue:
         if(isResetProductNeeded) resetProduct();
         break;
+
     case ControlParam_WeightError:
         if(isResetProductNeeded) resetProduct();
         db->saveLog(LogType_Error, LogSource_Weight, QString("Ошибка весового модуля. Код: %1. Описание: %2").arg(
@@ -954,7 +955,7 @@ void AppManager::updateWeightStatus()
     if(isPieceProduct && printStatus.pieces < 1) printStatus.pieces = 1;
 
     const bool isWM = equipmentManager->isWM();
-    ScaleStatus scale = equipmentManager->getStatus();
+    ScaleStatus scale = equipmentManager->getWMStatus();
 
     const bool isPM = equipmentManager->isPM();
     const bool isAutoPrint = settings->getBoolValue(SettingCode_PrintAuto) &&
@@ -994,7 +995,7 @@ void AppManager::updateWeightStatus()
     if(isWM)
     {
         if(scale.isOverloaded) beepSound();
-        else if(isPieceProduct|| !scale.isError) quantity = moneyCalculator->quantityAsString(product);
+        if (isPieceProduct || !scale.isError) quantity = moneyCalculator->quantityAsString(product);
     }
     emit showControlParam(ControlParam_WeightValue, quantity);
     emit showControlParam(ControlParam_WeightColor, isPieceProduct || (scale.isWeightFixed && !scale.isError) ? activeColor : passiveColor);

@@ -35,8 +35,12 @@ OnePlusOneAndroidSDK::ScalesOS::ScalesSDK* OpoScaleSDK::getsdk()
 
         qDebug() << "getsdk";
         const android::content::Context context(gcontext);
-        listener = OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged);
-        sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context, listener);
+        sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context);
+        qDebug() << "getsdk.1";
+        //listener = OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::WeightChangedListener::ImplementInterface(onWeightChanged);
+        //sdk->setWeightChangedListener(listener);
+
+        //sdk = &OnePlusOneAndroidSDK::ScalesOS::ScalesSDK::getInstance(context, listener);
         qDebug() << "getsdk: OK";
     }
     return sdk;

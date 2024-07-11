@@ -1,6 +1,7 @@
 #ifndef WEIGHTMANAGER_OPO_H
 #define WEIGHTMANAGER_OPO_H
 
+#include <QTimer>
 #include "constants.h"
 #include "weightmanager.h"
 #include "oposcalesdk.h"
@@ -25,6 +26,7 @@ public:
     QString getErrorText() { return errorText;}
     QString getErrorDescription(const int e);
 private:
+    QTimer timer;
     OpoScaleSDK device;
     ScaleStatus status;
     QString deviceName = "ttyS0";
@@ -36,6 +38,9 @@ private:
     void clearError();
     int readConnectParam(const QString &filename, const QString &param, QString &uri);
     void onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo& arg1);
+
+public slots:
+    void onTimer();
 
 signals:
     void paramChanged(const int, const int);

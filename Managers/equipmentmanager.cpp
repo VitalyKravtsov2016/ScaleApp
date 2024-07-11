@@ -7,7 +7,7 @@
 #include "productdbtable.h"
 #include "database.h"
 #include "users.h"
-#include "Label/labelcreator.h"
+#include "Label/labelCreator.h"
 #include "appmanager.h"
 #include "weightmanager.h"
 #include "weightmanager_demo.h"
@@ -21,6 +21,7 @@
 EquipmentManager::EquipmentManager(AppManager *parent) : ExternalMessager(parent)
 {
     Tools::debugLog("@@@@@ EquipmentManager::EquipmentManager ");
+    labelCreator = new LabelCreator();
 }
 
 void EquipmentManager::create()
@@ -33,18 +34,6 @@ void EquipmentManager::create()
 
     const QString path = EQUIPMENT_CONFIG_FILE;
     Tools::debugLog("@@@@@ EquipmentManager::create " + path);
-
-    if(!QFile::exists(path))
-    {
-        showAttention(QString("Конфиг.файл %1 не найден. %2").arg(path, WMPM_MESSAGE_NONE));
-        return;
-    }
-    QFile file(path);
-    if(file.size() == 0)
-    {
-        showAttention(QString("Конфиг.файл %1 имеет размер 0. %2").arg(path, WMPM_MESSAGE_NONE));
-        return;
-    }
 
     createWM();
     int e1 = wm->open(path);
@@ -220,7 +209,7 @@ int EquipmentManager::print(DataBase* db, const DBRecord& user, const DBRecord& 
 
     quint64 dateTime = Tools::nowMsec();
     int labelNumber = 0; // todo
-    int e = labelCreator->loadLabel(":/Labels/60x40.lpr"); // todo
+    int e = labelCreator->loadLabel(":/Labels/60x30.lpr"); // todo
     if (e == 0)
     {
         PrintData pd;

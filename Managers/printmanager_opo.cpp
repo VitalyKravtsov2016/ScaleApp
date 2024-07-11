@@ -50,6 +50,7 @@ int PrintManager_Opo::stop()
 int PrintManager_Opo::print(QImage image)
 {
     Tools::debugLog("@@@@@ PrintManager_Opo::print");
+    image.invertPixels(QImage::InvertRgb);
     QBitmap bitmap = QBitmap::fromImage(image, Qt::MonoOnly);
     device.PrintLabelBitmap(bitmap);
     Tools::debugLog("@@@@@ PrintManager_Opo::print=0");

@@ -33,7 +33,7 @@ private:
     int errorCode = 0;
     int status = 0;
     QString uri;
-    EquipmentMode mode = EquipmentMode_None;
+    EquipmentMode mode = EquipmentMode_Ok;
 public:
 
 signals:

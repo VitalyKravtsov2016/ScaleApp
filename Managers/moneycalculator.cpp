@@ -26,7 +26,7 @@ QVariant MoneyCalculator::price(const DBRecord& product)
 double MoneyCalculator::quantityAsDouble(const DBRecord& product)
 {
     if(ProductDBTable::isPiece(product)) return (double)(appManager->printStatus.pieces);
-    ScaleStatus scale = appManager->equipmentManager->getStatus();
+    ScaleStatus scale = appManager->equipmentManager->getWMStatus();
     if (scale.isError) return 0;
     return scale.weight * (ProductDBTable::is100gBase(product) ? 10 : 1);
 }
@@ -39,7 +39,7 @@ QString MoneyCalculator::quantityAsString(const DBRecord& product)
         double v = Tools::round(q, 0);
         return Tools::doubleToString(v, 0);
     }
-    ScaleStatus scale = appManager->equipmentManager->getStatus();
+    ScaleStatus scale = appManager->equipmentManager->getWMStatus();
     if (scale.isError) return "";
     double v = Tools::round(q, WEIGHT_POINT_POSITION);
     return Tools::doubleToString(v, WEIGHT_POINT_POSITION);

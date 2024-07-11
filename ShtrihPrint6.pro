@@ -440,6 +440,7 @@ android {
 
     dependencies {
         files('opoandroidsdk_v2.017.jar')
+        files('play-services-gni-native-c-1.0.0-beta2.aar')
     }
 }
 

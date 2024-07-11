@@ -5,96 +5,11 @@
 #include "oposcalesdk.h"
 #include <QJsonDocument>
 
-int WeightManager_Opo::readConnectParam(const QString &filename, const QString &param, QString &uri)
-{
-    Tools::debugLog("@@@@@ WeightManager_Opo::readConnectParam");
-
-    clearError();
-
-    QFile file(filename);
-    QByteArray data;
-    if (!file.exists())
-    {
-        errorCode = -21;
-        errorText = "Файл не найден";
-        return errorCode;
-    }
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        if (file.error() == QFileDevice::PermissionsError)
-        {
-            errorCode = -22;
-            errorText = "Нет разрешений на чтение файла";
-            return errorCode;
-        }
-        else
-        {
-            errorCode = -23;
-            errorText = "Ошибка открытия файла";
-            return errorCode;
-        }
-    }
-
-    data = file.readAll();
-    if (file.error() != QFileDevice::NoError)
-    {
-        errorCode = -24;
-        errorText = "Ошибка чтения файла";
-        file.close();
-        return errorCode;
-    }
-
-    if (data.isEmpty()) {
-        errorCode = -25;
-        errorText = "Пустой файл";
-        file.close();
-        return errorCode;
-    }
-
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(data);
-    QJsonObject   jsonObject = jsonDocument.object();
-    QJsonValue    jsonValue = jsonObject[param];
-    if (jsonValue != QJsonValue::Null) uri = jsonValue.toString();
-    else
-    {
-        errorCode = -26;
-        errorText = "Параметр не найден";
-        file.close();
-        return errorCode;
-    }
-    file.close();
-    return errorCode;
-}
-
-// "/dev/ttyS0";
-// "WmUri":"serial:/dev/ttyS0",
-
 int WeightManager_Opo::open(QString path)
 {
     Tools::debugLog("@@@@@ WeightManager_Opo::open " + path);
     clearError();
-    QString uri;
-    int e = readConnectParam(path, "WmUri", uri);
-    if(e)
-    {
-        return e;
-    }
-
-    if (uri.startsWith("demo:")){
-        mode = EquipmentMode_Demo;
-        return 0;
-    }
-
-    if (uri.startsWith("serial:")){
-        static QString SerialRegexStr("^serial:\\/\\/w+");
-        QRegularExpression reg(SerialRegexStr);
-        QRegularExpressionMatch match = reg.match(uri);
-        deviceName = match.captured(0);
-        mode = EquipmentMode_Ok;
-        return 0;
-    }
-    mode = EquipmentMode_None;
+    mode = EquipmentMode_Ok;
     return 0;
 }
 
@@ -117,11 +32,23 @@ int WeightManager_Opo::start()
             errorText = "Ошибка открытия устройства";
         } else
         {
+            connect(&timer, &QTimer::timeout, this, &WeightManager_Opo::onTimer);
+            timer.start(100);
             started = true;
         }
     }
     Tools::debugLog("@@@@@ WeightManager_Opo::start: " + errorText);
     return errorCode;
+}
+
+void WeightManager_Opo::onTimer()
+{
+    Tools::debugLog("@@@@@ WeightManager_Opo::onTimer");
+    ScaleStatus nstatus = getStatus();
+    if (nstatus.weight != status.weight){
+        emit paramChanged(ControlParam_WeightValue, 0);
+    }
+    status = nstatus;
 }
 
 void WeightManager_Opo::onWeightChanged(const ::OnePlusOneAndroidSDK::ScalesOS::WeightInfo& arg1)
@@ -137,6 +64,7 @@ int WeightManager_Opo::stop()
     clearError();
     if (started){
         started = false;
+        timer.stop();
         device.Close();
     }
     return errorCode;
@@ -157,6 +85,7 @@ ScaleStatus WeightManager_Opo::getStatus()
 {
     Tools::debugLog("@@@@@ WeightManager_Opo::getStatus");
 
+    ScaleStatus status;
     QString result = device.GetResult();
     WeightData weight = device.getWeight();
 
@@ -167,7 +96,8 @@ ScaleStatus WeightManager_Opo::getStatus()
     status.isStarted = started;
     status.isTareSet = weight.isTareSet();
     status.isWeightFixed = weight.isStable();
-    status.isWeightZero = status.weight == 0;
+    status.isWeightZero = true;
+    //status.isWeightZero = status.weight == 0;
     Tools::debugLog("@@@@@ WeightManager_Opo::getStatus: tare=" + Tools::doubleToString(status.tare, 3) +
                     ", weight=" + Tools::doubleToString(status.weight, 3) +
                     ", isTareSet=" + Tools::boolToString(status.isTareSet) +
