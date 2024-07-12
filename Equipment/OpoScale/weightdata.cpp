@@ -9,7 +9,7 @@
 #define ModeTareSet     "P"
 
 // Status constants
-#define StatusFlow      "F"
+#define StatusOverflow  "F"
 #define StatusStable    "S"
 #define StatusUnstable  "U"
 
@@ -59,10 +59,17 @@ QString WeightData::getGrossWeight(){
     return sGrossWeight;
 }
 
+bool WeightData::isZero(){
+    return (sZero == ">0<");
+}
+
 bool WeightData::isTareSet(){
     return (sMode == ModeTare)||(sMode == ModeTareSet);
 }
 
+bool WeightData::isOverflow(){
+    return sStatus == StatusOverflow;
+}
 bool WeightData::isStable(){
     return sStatus == StatusStable;
 }

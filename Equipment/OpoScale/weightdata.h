@@ -25,8 +25,10 @@ public:
     QString getTareWeight();
     QString getGrossWeight();
 
-    bool isTareSet();
+    bool isZero();
     bool isStable();
+    bool isTareSet();
+    bool isOverflow();
 
 };
 

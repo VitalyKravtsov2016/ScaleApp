@@ -92,12 +92,11 @@ ScaleStatus WeightManager_Opo::getStatus()
     status.tare = weight.getTareWeight().toDouble();
     status.weight = weight.getNetWeight().toDouble();
     status.isError = false;
-    status.isOverloaded = false;
     status.isStarted = started;
     status.isTareSet = weight.isTareSet();
     status.isWeightFixed = weight.isStable();
-    status.isWeightZero = true;
-    //status.isWeightZero = status.weight == 0;
+    status.isOverloaded = weight.isOverflow();
+    status.isWeightZero = weight.getGrossWeight().toDouble() == 0;
     Tools::debugLog("@@@@@ WeightManager_Opo::getStatus: tare=" + Tools::doubleToString(status.tare, 3) +
                     ", weight=" + Tools::doubleToString(status.weight, 3) +
                     ", isTareSet=" + Tools::boolToString(status.isTareSet) +
