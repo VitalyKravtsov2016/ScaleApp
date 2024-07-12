@@ -12,7 +12,7 @@ Rectangle
     property int titleFontSize: screenManager.weightTitleFontSize()
     property int flagIconSize: (valueFontSize + titleFontSize + screenManager.spacer()) / 4
     property int flagIconWidth: flagIconSize + screenManager.spacer()
-    property int displayWidth: weightPanel.width - flagIconWidth - screenManager.spacer()
+    property int displayWidth: weightPanel.width - flagIconWidth * 2 - screenManager.spacer()
     property int weightWidth: displayWidth * 6 / (6 + 7 + 9)
     property int priceWidth: displayWidth * 7 / (6 + 7 + 9)
     property int amountWidth: displayWidth - weightWidth - priceWidth
@@ -230,6 +230,35 @@ Rectangle
                     onClicked: app.onWeightPanelClicked(3);
                 }
             }
+        }
+
+        Column
+        {
+            width: amountWidth
+            height: parent.height
+            spacing: 0
+            padding: 0
+
+            RoundIconButton
+            {
+                id: weightPanelZeroButton
+                Layout.column: 0
+                Layout.row: 0
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                icon.source: "../Icons/zero_white"
+                onClicked: app.onZeroClicked()
+            }
+
+            RoundIconButton
+            {
+                id: weightPanelTareButton
+                Layout.column: 0
+                Layout.row: 1
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                icon.source: "../Icons/tare_white"
+                onClicked: app.onTareClicked()
+            }
+
         }
     }
 }

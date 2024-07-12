@@ -32,6 +32,9 @@ int WeightManager_Opo::start()
             errorText = "Ошибка открытия устройства";
         } else
         {
+            device.ExitTare();
+            device.Zero();
+
             connect(&timer, &QTimer::timeout, this, &WeightManager_Opo::onTimer);
             timer.start(100);
             started = true;
@@ -117,8 +120,8 @@ void WeightManager_Opo::setParam(const int param){
         break;
 
     case ControlParam_Zero:
+        device.ExitTare();
         device.Zero();
-        device.Tare();
         break;
     default:
         break;
