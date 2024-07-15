@@ -360,6 +360,7 @@ enum SettingCode // Должны совпадать со значениями в
 struct ScaleStatus {
     double_t weight;
     double_t tare;
+    double_t grossWeight;
     bool isStarted;
     bool isError;
     bool isOverloaded;

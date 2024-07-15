@@ -5,6 +5,21 @@
 #include "oposcalesdk.h"
 #include <QJsonDocument>
 
+bool isEquals(ScaleStatus item1, ScaleStatus item2)
+{
+    return (item1.weight == item2.weight) &&
+           (item1.tare == item2.tare) &&
+           (item1.isStarted == item2.isStarted) &&
+           (item1.isError == item2.isError) &&
+           (item1.isOverloaded == item2.isOverloaded) &&
+           (item1.isWeightFixed == item2.isWeightFixed) &&
+           (item1.isWeightZero == item2.isWeightZero) &&
+           (item1.isTareSet == item2.isTareSet) &&
+           (item1.isDemoMode == item2.isDemoMode);
+
+}
+
+
 int WeightManager_Opo::open(QString path)
 {
     Tools::debugLog("@@@@@ WeightManager_Opo::open " + path);
@@ -48,7 +63,8 @@ void WeightManager_Opo::onTimer()
 {
     Tools::debugLog("@@@@@ WeightManager_Opo::onTimer");
     ScaleStatus nstatus = getStatus();
-    if (nstatus.weight != status.weight){
+    if (!isEquals(nstatus, status))
+    {
         emit paramChanged(ControlParam_WeightValue, 0);
     }
     status = nstatus;
@@ -94,12 +110,13 @@ ScaleStatus WeightManager_Opo::getStatus()
 
     status.tare = weight.getTareWeight().toDouble();
     status.weight = weight.getNetWeight().toDouble();
+    status.grossWeight = weight.getGrossWeight().toDouble();
     status.isError = false;
     status.isStarted = started;
     status.isTareSet = weight.isTareSet();
-    status.isWeightFixed = weight.isStable();
+    status.isWeightFixed = weight.isStable() && (status.grossWeight >= 0.040);
     status.isOverloaded = weight.isOverflow();
-    status.isWeightZero = weight.getGrossWeight().toDouble() == 0;
+    status.isWeightZero = status.grossWeight == 0;
     Tools::debugLog("@@@@@ WeightManager_Opo::getStatus: tare=" + Tools::doubleToString(status.tare, 3) +
                     ", weight=" + Tools::doubleToString(status.weight, 3) +
                     ", isTareSet=" + Tools::boolToString(status.isTareSet) +
